@@ -19,6 +19,7 @@ const EmailResponseModal: React.FC<EmailResponseModalProps> = ({
       onCancel={onClose}
       onOk={onClose}
       okText="Fechar"
+      footer={null}
     >
       {response && (
         <div>

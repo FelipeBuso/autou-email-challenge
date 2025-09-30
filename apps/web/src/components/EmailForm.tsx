@@ -7,6 +7,7 @@ import {
   Image,
   Input,
   Row,
+  Typography,
   Upload,
   message,
 } from "antd";
@@ -60,23 +61,24 @@ const EmailForm = () => {
       gap="64px"
     >
       <Image src={Logo} style={{ marginTop: "64px" }} preview={false} />
-
-      <Flex
-        align="center"
+      <Typography.Title level={4}>Classificador de e-mail</Typography.Title>
+      <Row
+        justify="center"
+        align="middle"
         style={{
           width: "70%",
+          height: "50%",
           backgroundColor: "#ffffff",
           padding: "12px",
           borderRadius: "16px",
         }}
-        gap="middle"
       >
-        <Flex
+        <Col
+          xs={24}
+          lg={15}
           style={{
-            width: "65%",
-            border: "solid 1px #d0d0d0",
-            padding: "8px",
-            borderRadius: "4px",
+            padding: "16px",
+            borderRadius: "8px",
           }}
         >
           <Form
@@ -84,8 +86,9 @@ const EmailForm = () => {
             onFinish={handleTextSubmit}
             layout="vertical"
           >
-            <Form.Item name="text" label="Texto do Email">
+            <Form.Item name="text">
               <Input.TextArea
+                placeholder="Cole ou digite o texto do email"
                 disabled={fileList.length > 0}
                 onChange={(e) => {
                   setEmailText(e.target.value);
@@ -103,47 +106,61 @@ const EmailForm = () => {
               </Button>
             </Form.Item>
           </Form>
-        </Flex>
-
-        <Flex
-          vertical
-          justify="center"
-          align="center"
+        </Col>
+        <Col xs={24} lg={1}>
+          <Flex style={{ width: "100%" }} justify="center">
+            <Typography.Text>ou</Typography.Text>
+          </Flex>
+        </Col>
+        <Col
+          xs={24}
+          lg={8}
           style={{
-            width: "35%",
+            width: "100%",
             height: "100%",
-            border: "solid 1px #d0d0d0",
-            padding: "8px",
-            borderRadius: "4px",
+
+            padding: "16px",
+            borderRadius: "8px",
+            maxHeight: "180px",
           }}
         >
-          <Upload
-            style={{ width: "100%" }}
-            beforeUpload={(file) => {
-              setFileList([file]);
-              return false; // evita upload automático
+          <Flex
+            vertical
+            justify="space-around"
+            align="center"
+            style={{
+              height: "100%",
+              width: "100%",
             }}
-            fileList={fileList}
-            onRemove={() => setFileList([])}
           >
-            <Button
-              disabled={!!emailText}
+            <Upload
               style={{ width: "100%" }}
-              icon={<UploadOutlined />}
+              beforeUpload={(file) => {
+                setFileList([file]);
+                return false;
+              }}
+              fileList={fileList}
+              onRemove={() => setFileList([])}
             >
-              Selecionar Arquivo
+              <Button
+                disabled={!!emailText}
+                style={{ width: "100%" }}
+                icon={<UploadOutlined />}
+              >
+                Selecionar Arquivo
+              </Button>
+            </Upload>
+            <Button
+              type="primary"
+              style={{ marginTop: 10 }}
+              onClick={handleFileSubmit}
+              disabled={fileList.length === 0}
+            >
+              Classificar Arquivo
             </Button>
-          </Upload>
-          <Button
-            type="primary"
-            style={{ marginTop: 10 }}
-            onClick={handleFileSubmit}
-            disabled={fileList.length === 0}
-          >
-            Classificar Arquivo
-          </Button>
-        </Flex>
-      </Flex>
+          </Flex>
+        </Col>
+      </Row>
 
       {response && (
         <EmailResponseModal response={response} onClose={handleCloseModal} />
