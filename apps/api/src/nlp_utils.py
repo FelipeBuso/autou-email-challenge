@@ -1,6 +1,6 @@
 import os
 import re
-import torch
+import json
 from transformers import (
     AutoTokenizer,
     AutoModelForSequenceClassification,
@@ -14,12 +14,14 @@ from PyPDF2 import PdfReader
 MODEL_DIR = "./email_classifier"
 LABEL_MAP = {"Improdutivo": 0, "Produtivo": 1}
 
-DATA = [
-    {"text": "Preciso abrir um chamado para reativar a internet", "label": "Produtivo"},
-    {"text": "Obrigado pela ajuda!", "label": "Improdutivo"},
-    {"text": "Atualizar senha do sistema", "label": "Produtivo"},
-    {"text": "Parabéns pelo trabalho!", "label": "Improdutivo"},
-]
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATASET_PATH = os.path.join(BASE_DIR, "../data/training_dataset.json")
+
+
+def load_dataset():
+    with open(DATASET_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
 
 
 def preprocess_text(text: str) -> str:
@@ -36,7 +38,7 @@ def prepare_dataset(data):
 
 
 def train_model():
-    dataset = prepare_dataset(DATA)
+    dataset = prepare_dataset(load_dataset())
     tokenizer = AutoTokenizer.from_pretrained("neuralmind/bert-base-portuguese-cased")
     tokenized = dataset.map(
         lambda x: tokenizer(
