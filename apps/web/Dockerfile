@@ -1,36 +1,29 @@
-# Stage 1: Build
-FROM node:20-alpine AS build
+FROM node:22-alpine AS builder
 
 WORKDIR /app
 
-# Instala pnpm globalmente
 RUN npm install -g pnpm
 
-# Copia apenas arquivos de lock e package.json
-COPY package.json pnpm-lock.yaml ./
+COPY pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/web/package.json ./apps/web/
 
-# Instala dependências
-RUN pnpm install
+RUN pnpm install --frozen-lockfile
 
-# Copia todo o projeto
-COPY . .
+COPY apps/web ./apps/web
 
-# Build da aplicação
+WORKDIR /app/apps/web
 RUN pnpm build
 
-# Stage 2: Serve a build com 'serve'
-FROM node:20-alpine AS production
+FROM node:22-alpine
 
 WORKDIR /app
 
-# Instala serve globalmente
 RUN npm install -g serve
 
-# Copia a build do estágio anterior
-COPY --from=build /app/dist ./dist
+COPY --from=builder /app/apps/web/dist ./dist
 
-# Expõe a porta
+ENV VITE_API_URL=http://localhost:8000/api
+
 EXPOSE 5173
 
-# Comando para servir a build
 CMD ["serve", "-s", "dist", "-l", "5173"]

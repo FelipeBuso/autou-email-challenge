@@ -1,0 +1,31 @@
+# Node
+node_modules
+apps/web/node_modules
+apps/api/node_modules
+npm-debug.log
+pnpm-debug.log
+yarn-debug.log
+*.log
+
+# Builds
+dist
+build
+apps/web/dist
+apps/web/build
+
+# Output do Vite/React
+.next
+out
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Venv
+.venv
+env/
+venv/
+
+# Misc
+.DS_Store
