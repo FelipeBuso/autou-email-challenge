@@ -11,7 +11,7 @@ UPLOAD_DIR.mkdir(exist_ok=True)
 
 @router.get("/")
 def read_root():
-    return {"Python": "on Vercel"}
+    return {"FastAPI"}
 
 
 @router.post("/classify-text")

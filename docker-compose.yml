@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: ./apps/api
+    container_name: autou-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./apps/api:/app
+    environment:
+      - ENV=development
+      - PORT=8000
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        VITE_API_URL: http://localhost:8000/api
+    container_name: autou-web
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api

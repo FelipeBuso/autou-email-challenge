@@ -8,6 +8,8 @@ export interface ClassificationResult {
   suggested_response?: string;
 }
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const classifyText = async (
   text: string
 ): Promise<ClassificationResult> => {
@@ -15,7 +17,7 @@ export const classifyText = async (
   formData.append("text", text);
 
   const response = await axios.post<ClassificationResult>(
-    "/classify-text",
+    API_URL + "/classify-text",
     formData
   );
   return response.data;
@@ -28,7 +30,7 @@ export const classifyFile = async (
   formData.append("file", file);
 
   const response = await axios.post<ClassificationResult>(
-    "/classify-file",
+    API_URL + "/classify-file",
     formData,
     {
       headers: { "Content-Type": "multipart/form-data" },
