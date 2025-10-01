@@ -9,6 +9,11 @@ UPLOAD_DIR = Path("./uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
 
 
+@router.get("/")
+def read_root():
+    return {"Python": "on Vercel"}
+
+
 @router.post("/classify-text")
 async def classify_text_endpoint(text: str = Form(...)):
     return classify_email(text)
