@@ -141,6 +141,8 @@ const EmailForm = () => {
               }}
               fileList={fileList}
               onRemove={() => setFileList([])}
+              maxCount={1}
+              accept=".txt, .pdf"
             >
               <Button
                 disabled={!!emailText}
